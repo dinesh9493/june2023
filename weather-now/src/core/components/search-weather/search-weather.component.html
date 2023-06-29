@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-1 text-end">
+    <label class="form-label">City : </label>
+  </div>
+  <div class="col-md-6">
+    <input
+      class="form-control"
+      type="text"
+      [(ngModel)]="cityName"
+      placeholder="Please enter the City Name..."
+    />
+  </div>
+  <div class="col-md-5">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="getWeatherOfCityName()"
+    >
+      Get Weather
+    </button>
+  </div>
+</div>
+
+<div class="card" style="width: 18rem; margin: 20px" *ngIf="weartherDetails">
+  <img src="" class="card-img-top" alt="" />
+  <div class="card-body">
+    <h5 class="card-title">{{ weartherDetails?.name }}</h5>
+    <p class="card-text" *ngFor="let weather of weartherDetails.weather">
+      {{ weather.description }}
+    </p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      Humidity is {{ weartherDetails?.main?.humidity }}
+    </li>
+    <li class="list-group-item">
+      Wind Speed is {{ weartherDetails?.wind?.speed }} km/h
+    </li>
+    <li class="list-group-item">
+      {{ weartherDetails?.clouds?.all }}% of Clouds
+    </li>
+  </ul>
+  <div class="card-body">
+    <a class="card-link">Card link</a>
+    <a class="card-link">Another link</a>
+  </div>
+</div>
