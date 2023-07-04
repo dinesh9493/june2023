@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SearchWeatherComponent } from './components/search-weather/search-weather.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
   {
-    path: 'search',
-    component: SearchWeatherComponent,
-  },
-  {
     path: '',
-    redirectTo: 'search',
-    pathMatch: 'full',
+    component: WelcomeComponent,
   },
   {
-    path: '**',
-    redirectTo: 'search',
-    pathMatch: 'full',
+    path: 'search-result',
+    component: SearchWeatherComponent,
   },
 ];
 

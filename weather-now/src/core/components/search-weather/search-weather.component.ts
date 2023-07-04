@@ -1,29 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AsyncService } from 'src/modules/shared/services/async.service';
 
 import { SharedApiService } from 'src/modules/shared/services/shared-api.service';
+import { StateManagementService } from 'src/modules/shared/services/state-management.service';
 
 @Component({
   selector: 'wn-search-weather',
   templateUrl: './search-weather.component.html',
   styleUrls: ['./search-weather.component.scss'],
 })
-export class SearchWeatherComponent {
-  public cityName: string = '';
+export class SearchWeatherComponent implements OnInit, OnDestroy {
   public weartherDetails: any;
 
-  constructor(private _sharedApiService: SharedApiService) {}
+  private _subscription = new Subscription();
 
-  public getWeatherOfCityName() {
-    this.weartherDetails = null;
-    this._sharedApiService.getWeatherDetails(this.cityName).subscribe({
-      next: (response: any) => {
-        if (response) {
-          this.weartherDetails = response;
-        }
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
+  constructor(
+    private _stateManagementService: StateManagementService,
+    private _asyncService: AsyncService
+  ) {}
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.weartherDetails = this._stateManagementService.getLatestResult();
+    this._subscribeToEvents();
+  }
+
+  private _subscribeToEvents() {
+    this._subscription.add(
+      this._asyncService.listenToWeatherUpdates().subscribe({
+        next: (response) => {
+          this.weartherDetails = this._stateManagementService.getLatestResult();
+        },
+      })
+    );
   }
 }
