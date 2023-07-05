@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastModule } from 'primeng/toast';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { CoreRoutingModule } from './core-routing.module';
 
@@ -23,6 +24,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     HttpClientModule,
     SharedModule,
     ToastModule,
+    NgxSpinnerModule,
   ],
   bootstrap: [LandingComponent],
 })

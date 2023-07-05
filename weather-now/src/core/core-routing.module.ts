@@ -12,6 +12,13 @@ const routes: Routes = [
     path: 'search-result',
     component: SearchWeatherComponent,
   },
+  {
+    path: 'search-history',
+    loadChildren: () =>
+      import('../modules/search-history/search-history.module').then(
+        (m) => m.SearchHistoryModule
+      ),
+  },
 ];
 
 @NgModule({
