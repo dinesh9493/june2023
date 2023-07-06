@@ -33,15 +33,34 @@ export class HeaderNavComponent {
       next: (response: any) => {
         if (response) {
           this._wnSpinnerService.hideSpinner();
-          this._stateManagementService.setHistory(response);
+          this._stateManagementService.updateHistory(response);
           this._wnToastService.showSuccess('Got the weather details!');
           this._asyncService.triggerWeatherUpdates();
+          this._syncSearchHistoryToCloud();
           this._router.navigateByUrl('search-result');
         }
       },
       error: (error: any) => {
         this._wnSpinnerService.hideSpinner();
         this._wnToastService.showError('Please enter a Valid City Name');
+      },
+    });
+  }
+
+  private _syncSearchHistoryToCloud() {
+    this._wnSpinnerService.showSpinner();
+    let history = this._stateManagementService.getHistory();
+    let payload = {
+      data: history,
+    };
+    this._sharedApiService.syncHistoryWithCloud(payload).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this._wnSpinnerService.hideSpinner();
+      },
+      error: (error: any) => {
+        console.log(error);
+        this._wnSpinnerService.hideSpinner();
       },
     });
   }

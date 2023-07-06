@@ -4,21 +4,31 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class StateManagementService {
-  private _searchHistory: Array<any> = [];
+  private _searchHistory: string = '[]';
 
   constructor() {}
 
   public getHistory() {
-    return this._searchHistory;
+    let temp = JSON.parse(this._searchHistory);
+    return temp;
   }
 
   public getLatestResult() {
-    if (this._searchHistory.length) {
-      return this._searchHistory[this._searchHistory.length - 1];
+    let temp = JSON.parse(this._searchHistory);
+    if (temp.length) {
+      return temp[temp.length - 1];
     }
   }
 
+  public updateHistory(data: any) {
+    let temp = JSON.parse(this._searchHistory);
+    temp.push(data);
+    let str = JSON.stringify(temp);
+    this._searchHistory = str;
+  }
+
   public setHistory(data: any) {
-    this._searchHistory.push(data);
+    let temp = JSON.stringify(data);
+    this._searchHistory = temp;
   }
 }

@@ -11,7 +11,7 @@ import { StateManagementService } from 'src/modules/shared/services/state-manage
   styleUrls: ['./search-weather.component.scss'],
 })
 export class SearchWeatherComponent implements OnInit, OnDestroy {
-  public weartherDetails: any;
+  public data: any;
 
   private _subscription = new Subscription();
 
@@ -25,7 +25,7 @@ export class SearchWeatherComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.weartherDetails = this._stateManagementService.getLatestResult();
+    this.data = this._stateManagementService.getLatestResult();
     this._subscribeToEvents();
   }
 
@@ -33,7 +33,7 @@ export class SearchWeatherComponent implements OnInit, OnDestroy {
     this._subscription.add(
       this._asyncService.listenToWeatherUpdates().subscribe({
         next: (response) => {
-          this.weartherDetails = this._stateManagementService.getLatestResult();
+          this.data = this._stateManagementService.getLatestResult();
         },
       })
     );
