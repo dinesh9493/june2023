@@ -1,5 +1,5 @@
 <section class="container-fluid" *ngIf="isDataLoaded">
-  <wn-header-nav></wn-header-nav>
+  <wn-header-nav *ngIf="isLoggedIn"></wn-header-nav>
   <main class="main-container">
     <router-outlet></router-outlet>
   </main>

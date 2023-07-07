@@ -5,7 +5,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'welcome',
     component: WelcomeComponent,
   },
   {
@@ -19,6 +19,15 @@ const routes: Routes = [
         (m) => m.SearchHistoryModule
       ),
   },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('../modules/sign-in-or-up/sign-in-or-up.module').then(
+        (m) => m.SignInOrUpModule
+      ),
+  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({

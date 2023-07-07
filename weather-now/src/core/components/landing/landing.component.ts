@@ -17,6 +17,7 @@ import { StateManagementService } from 'src/modules/shared/services/state-manage
 })
 export class LandingComponent implements OnInit, OnDestroy {
   public isDataLoaded: boolean = false;
+  public isLoggedIn: boolean = false;
   private _subscription = new Subscription();
 
   constructor(

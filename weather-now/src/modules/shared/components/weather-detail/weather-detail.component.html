@@ -24,8 +24,7 @@
       {{ weartherDetails?.clouds?.all }}% of Clouds
     </li>
   </ul>
-  <div class="card-body">
-    <a class="card-link">Card link</a>
-    <a class="card-link">Another link</a>
+  <div class="card-body" *ngIf="isRefreshAvailable">
+    <a class="card-link" style="cursor: pointer" (click)="refresh()">Refresh</a>
   </div>
 </div>
