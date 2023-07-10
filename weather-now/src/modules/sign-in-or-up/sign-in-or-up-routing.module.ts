@@ -11,7 +11,7 @@ const routes: Routes = [
     component: LoginContainerComponent,
     children: [
       {
-        path: '',
+        path: 'form',
         component: LoginComponent,
       },
       {
@@ -23,8 +23,13 @@ const routes: Routes = [
         component: SignUpComponent,
       },
       {
+        path: '',
+        redirectTo: 'register',
+        pathMatch: 'full',
+      },
+      {
         path: '**',
-        redirectTo: '',
+        redirectTo: 'register',
         pathMatch: 'full',
       },
     ],

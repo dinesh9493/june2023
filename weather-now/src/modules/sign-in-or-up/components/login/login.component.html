@@ -4,7 +4,7 @@
   </div>
   <div class="col-md-3"></div>
   <div class="col-md-6">
-    <form>
+    <form [formGroup]="loginFormGroup">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input
@@ -12,9 +12,34 @@
           class="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
+          formControlName="emailFormControl"
         />
         <div id="emailHelp" class="form-text">
           We'll never share your email with anyone else.
+        </div>
+        <div
+          id="emailHelp"
+          class="form-text"
+          style="color: red"
+          *ngIf="
+            isSubmitClicked &&
+            loginFormGroup.controls['emailFormControl'].errors &&
+            loginFormGroup.controls['emailFormControl'].errors['required']
+          "
+        >
+          Email field is required.
+        </div>
+        <div
+          id="emailHelp"
+          class="form-text"
+          style="color: red"
+          *ngIf="
+            isSubmitClicked &&
+            loginFormGroup.controls['emailFormControl'].errors &&
+            loginFormGroup.controls['emailFormControl'].errors['pattern']
+          "
+        >
+          Please give a valid Email Address.
         </div>
       </div>
       <div class="mb-3">
@@ -23,9 +48,21 @@
           type="password"
           class="form-control"
           id="exampleInputPassword1"
+          formControlName="passwordFormControl"
         />
+        <div
+          class="form-text"
+          style="color: red"
+          *ngIf="
+            isSubmitClicked &&
+            loginFormGroup.controls['passwordFormControl'].errors &&
+            loginFormGroup.controls['passwordFormControl'].errors['required']
+          "
+        >
+          Password field is required.
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button class="btn btn-primary" (click)="submit()">Submit</button>
     </form>
   </div>
   <div class="col-md-3"></div>
