@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EMAIL_PATTERN } from 'src/modules/shared/configs/pattern.config';
 
 @Component({
   selector: 'wn-login',
@@ -20,10 +21,7 @@ export class LoginComponent implements OnInit {
     this.loginFormGroup = this._formBuilder.group({
       emailFormControl: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
-        ],
+        [Validators.required, Validators.pattern(EMAIL_PATTERN)],
       ],
       passwordFormControl: ['', [Validators.required]],
     });

@@ -4,14 +4,42 @@
   </div>
   <div class="col-md-3"></div>
   <div class="col-md-6">
-    <form>
+    <form [formGroup]="signUpFormGroup">
       <div class="mb-3">
         <label class="form-label">First Name</label>
-        <input type="text" class="form-control" />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="firstName"
+          [ngClass]="{
+            'error-field': isSubmitClicked && firstNameRequiredValidation
+          }"
+        />
+        <div
+          class="form-text"
+          style="color: red"
+          *ngIf="isSubmitClicked && firstNameRequiredValidation"
+        >
+          First field is required.
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">Last Name</label>
-        <input type="text" class="form-control" />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="lastName"
+          [ngClass]="{
+            'error-field': isSubmitClicked && lastNameRequiredValidation
+          }"
+        />
+        <div
+          class="form-text"
+          style="color: red"
+          *ngIf="isSubmitClicked && lastNameRequiredValidation"
+        >
+          Last field is required.
+        </div>
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -20,14 +48,38 @@
           class="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
+          formControlName="email"
+          [ngClass]="{
+            'error-field':
+              isSubmitClicked &&
+              (emailRequiredValidation || emailPatternValidation)
+          }"
         />
         <div id="emailHelp" class="form-text">
           We'll never share your email with anyone else.
         </div>
+        <div
+          class="form-text"
+          style="color: red"
+          *ngIf="isSubmitClicked && emailRequiredValidation"
+        >
+          Email field is required.
+        </div>
+        <div
+          class="form-text"
+          style="color: red"
+          *ngIf="isSubmitClicked && emailPatternValidation"
+        >
+          Please enter a valid Email
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">Contact Number</label>
-        <input type="text" class="form-control" />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="contactNumber"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Gender</label>
@@ -35,8 +87,10 @@
           <input
             class="form-check-input"
             type="radio"
-            name="flexRadioDefault"
+            name="gender"
             id="flexRadioDefault1"
+            formControlName="gender"
+            value="male"
           />
           <label class="form-check-label" for="flexRadioDefault1"> Male </label>
         </div>
@@ -44,8 +98,10 @@
           <input
             class="form-check-input"
             type="radio"
-            name="flexRadioDefault"
+            name="gender"
             id="flexRadioDefault2"
+            value="female"
+            formControlName="gender"
           />
           <label class="form-check-label" for="flexRadioDefault2">
             Female
@@ -55,8 +111,10 @@
           <input
             class="form-check-input"
             type="radio"
-            name="flexRadioDefault"
+            name="gender"
             id="flexRadioDefault3"
+            formControlName="gender"
+            value="other"
           />
           <label class="form-check-label" for="flexRadioDefault3">
             Other
@@ -72,6 +130,7 @@
             type="checkbox"
             value=""
             id="flexCheckDefault"
+            formControlName="martialStatus"
           />
           <label class="form-check-label" for="flexCheckDefault">
             Still Married ?
@@ -81,52 +140,84 @@
 
       <div class="mb-3">
         <label>Address List</label>
-        <form>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">Address Line 1</label>
-                <input type="text" class="form-control" />
+        <ng-container formArrayName="addressList">
+          <ng-container
+            *ngFor="let address of addressListFormArray.controls; let i = index"
+          >
+            <form class="address-from" [formGroupName]="i">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Address Line 1</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="addressLine1"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Address Line 2</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="addressLine2"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">City</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="city"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">Address Line 2</label>
-                <input type="text" class="form-control" />
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">State</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="state"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Country</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="country"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label class="form-label">Zipcode</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="zipCode"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">City</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">State</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">Country</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label">Zipcode</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-          </div>
-        </form>
-        <button class="btn btn-primary">+ Add More Address</button>
+            </form>
+          </ng-container>
+        </ng-container>
+        <button class="btn btn-primary" (click)="addMoreAddress()">
+          + Add More Address
+        </button>
       </div>
 
-      <button class="btn btn-primary">Submit</button>
+      <button class="btn btn-primary" (click)="submit()">Submit</button>
     </form>
   </div>
   <div class="col-md-3"></div>
