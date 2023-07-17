@@ -26,4 +26,11 @@ export class SharedApiService {
       { headers }
     );
   }
+
+  public saveSignUpDetailsWithCloud(payload: any) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this._httpClient.put(URL_LIST.JSON_SERVER_URL_FOR_SIGN_UP, payload, {
+      headers,
+    });
+  }
 }

@@ -153,7 +153,18 @@
                       type="text"
                       class="form-control"
                       formControlName="addressLine1"
+                      [ngClass]="{
+                        'error-field':
+                          isSubmitClicked && getAddressLine1Validation(i)
+                      }"
                     />
+                    <div
+                      class="form-text"
+                      style="color: red"
+                      *ngIf="isSubmitClicked && getAddressLine1Validation(i)"
+                    >
+                      Address Line 1 field is required.
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -173,6 +184,9 @@
                       type="text"
                       class="form-control"
                       formControlName="city"
+                      [ngClass]="{
+                        'error-field': isSubmitClicked && getCityValidation(i)
+                      }"
                     />
                   </div>
                 </div>
@@ -185,6 +199,9 @@
                       type="text"
                       class="form-control"
                       formControlName="state"
+                      [ngClass]="{
+                        'error-field': isSubmitClicked && getStateValidation(i)
+                      }"
                     />
                   </div>
                 </div>
@@ -195,6 +212,10 @@
                       type="text"
                       class="form-control"
                       formControlName="country"
+                      [ngClass]="{
+                        'error-field':
+                          isSubmitClicked && getCountryValidation(i)
+                      }"
                     />
                   </div>
                 </div>
@@ -205,6 +226,10 @@
                       type="text"
                       class="form-control"
                       formControlName="zipCode"
+                      [ngClass]="{
+                        'error-field':
+                          isSubmitClicked && getZipcodeValidation(i)
+                      }"
                     />
                   </div>
                 </div>
