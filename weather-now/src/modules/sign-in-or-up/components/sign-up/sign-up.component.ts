@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WnSpinnerService } from 'src/core/services/wn-spinner.service';
 import { WnToastService } from 'src/core/services/wn-toast.service';
 import { EMAIL_PATTERN } from 'src/modules/shared/configs/pattern.config';
+import { do_Deep_Copy } from 'src/modules/shared/helpers/common.helper';
 import { SharedApiService } from 'src/modules/shared/services/shared-api.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._getRegisteredDetailsIfAny();
     this._initSignUpForm();
   }
 
@@ -63,7 +65,6 @@ export class SignUpComponent implements OnInit {
       addressList: this._formBuilder.array([]),
     });
     this._initAddressForm();
-    console.log(this.signUpFormGroup);
   }
 
   private _initAddressForm() {
@@ -78,6 +79,78 @@ export class SignUpComponent implements OnInit {
     let formArray = this.signUpFormGroup.get('addressList') as FormArray;
     formArray.push(address);
   }
+
+  private _getRegisteredDetailsIfAny() {
+    this._wnSpinnerService.showSpinner();
+    this._sharedApiService.getSignUpDetailsFromCloud().subscribe({
+      next: (response: any) => {
+        this._wnSpinnerService.hideSpinner();
+        this._wnToastService.showInfo('Received the Form Details.');
+        if (response.email) {
+          this._setValuesToTheForm(response);
+        }
+        if (response.addressList.length) {
+          this._updateAddressToTheForm(response);
+        }
+      },
+      error: (error: any) => {
+        this._wnSpinnerService.hideSpinner();
+        this._wnToastService.showInfo(
+          'Error while retrieving the information.'
+        );
+        console.log(error);
+      },
+    });
+  }
+
+  private _setValuesToTheForm(formValue: any) {
+    let temp = do_Deep_Copy(formValue);
+    delete temp.key;
+    delete temp.addressList;
+    this.signUpFormGroup.patchValue(temp);
+  }
+
+  private _updateAddressToTheForm(formValue: any) {
+    formValue.addressList.forEach((itr: any, ind: number) => {
+      let addressListArray = this.signUpFormGroup.controls[
+        'addressList'
+      ] as FormArray;
+      if (addressListArray.controls[ind]) {
+        addressListArray.controls[ind].setValue(itr);
+      } else {
+        /* METHOD - 1 */
+        this._initAddressForm();
+        addressListArray.controls[ind].setValue(itr);
+
+        /* METHOD - 2 */
+        /* let address: FormGroup = this._formBuilder.group({
+          addressLine1: [itr.addressLine1, [Validators.required]],
+          addressLine2: [itr.addressLine2],
+          city: [itr.city, [Validators.required]],
+          state: [itr.state, [Validators.required]],
+          country: [itr.country, [Validators.required]],
+          zipCode: [itr.zipCode, [Validators.required]],
+        });
+        let formArray = this.signUpFormGroup.get('addressList') as FormArray;
+        formArray.push(address); */
+
+        /* METHOD - 3 */
+        /* this._initAddressForm();
+        addressListArray.controls[ind]
+          .get('addressLine1')
+          ?.setValue(itr.addressLine1);
+        addressListArray.controls[ind]
+          .get('addressLine2')
+          ?.setValue(itr.addressLine2);
+        addressListArray.controls[ind].get('city')?.setValue(itr.city);
+        addressListArray.controls[ind].get('state')?.setValue(itr.state);
+        addressListArray.controls[ind].get('country')?.setValue(itr.country);
+        addressListArray.controls[ind].get('zipCode')?.setValue(itr.zipCode); */
+      }
+    });
+  }
+
+  /* FOR FORM VALIDATIONS ------- START */
 
   get firstNameRequiredValidation() {
     let isValid = false;
@@ -140,4 +213,6 @@ export class SignUpComponent implements OnInit {
     let addressFormGroup = formArray.controls[i] as FormGroup;
     return addressFormGroup.controls['zipCode'].errors?.['required'];
   }
+
+  /* FOR FORM VALIDATIONS ------- END */
 }

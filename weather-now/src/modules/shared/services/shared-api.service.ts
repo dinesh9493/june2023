@@ -33,4 +33,8 @@ export class SharedApiService {
       headers,
     });
   }
+
+  public getSignUpDetailsFromCloud() {
+    return this._httpClient.get(URL_LIST.JSON_SERVER_URL_FOR_SIGN_UP);
+  }
 }
